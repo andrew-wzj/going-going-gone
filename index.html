@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Going, Going, Gone! — How to play</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f1ea; --paper:#ffffff; --ink:#1d1a17; --muted:#5c564f; --line:#1d1a17; --soft:#e4ddd3;
+  --mint:#bfe4dc; --salmon:#e2584b; --pink:#f3c9c1; --sun:#f4d150; --sky:#9cc8e8; --leaf:#9fcf8f;
+  --good:#23794a; --bad:#b33a2e;
+  --display:"Bricolage Grotesque","Arial Rounded MT Bold","Trebuchet MS",sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#1c2422;--paper:#26302d;--ink:#f1ece4;--muted:#b6aea4;--line:#f1ece4;--soft:#3a4541;--good:#6fd39a;--bad:#f08a7e}
+}
+:root[data-theme="dark"]{--bg:#1c2422;--paper:#26302d;--ink:#f1ece4;--muted:#b6aea4;--line:#f1ece4;--soft:#3a4541;--good:#6fd39a;--bad:#f08a7e}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1.25rem;line-height:1.55}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--salmon);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.prose{max-width:66ch}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.02;margin:0}
+h2{font-size:clamp(2rem,4.6vw,3rem);margin-bottom:.6rem}
+h3{font-size:1.7rem;margin:1.4rem 0 .3rem}
+p{margin:.5rem 0 1rem}
+section{padding:0}
+section + section{border-top:2px solid var(--line)}
+.box{background:var(--paper);border:2.5px solid var(--line);border-radius:18px;padding:18px}
+
+/* hero */
+.hero{background:var(--mint);color:#1d1a17;border-bottom:2.5px solid #1d1a17;padding:44px 0 36px}
+.bubble{display:inline-block;background:#fff;border:3px solid #1d1a17;border-radius:50% / 46%;padding:28px 46px 34px;transform:rotate(-4deg)}
+.bubble h1{font-size:clamp(2.6rem,9vw,5.6rem);line-height:.86;letter-spacing:-.02em}
+.bubble h1 span{display:block}
+.bubble h1 span:nth-child(2){padding-left:.5em}
+.hero .lead{max-width:56ch;font-size:1.15rem;margin-top:26px}
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+nav.toc a{color:#1d1a17;text-decoration:none;background:#fff;border:2px solid #1d1a17;padding:5px 13px;border-radius:999px;font-weight:700;font-size:.95rem}
+nav.toc a:hover{background:var(--sun)}
+
+/* players */
+.cast{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
+.cast div{border:2.5px solid var(--line);border-radius:14px;padding:12px;background:var(--paper)}
+.cast b{display:block;font-family:var(--display);font-size:1.1rem}
+.cast small{color:var(--muted)}
+.dot{display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid #1d1a17;vertical-align:-2px;margin-right:6px}
+
+/* setup money */
+.money{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.bill{border:2.5px solid #1d1a17;border-radius:8px;padding:8px 14px;color:#1d1a17;font-weight:700;min-width:120px}
+.bill b{font-family:var(--display);font-size:1.6rem;display:block;line-height:1}
+.groups{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.tag{border:2px solid #1d1a17;border-radius:999px;padding:4px 12px;font-weight:700;color:#1d1a17;font-size:.95rem}
+
+/* artwork card */
+.anatomy{display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:start;margin-top:14px}
+.art{border:3px solid #1d1a17;border-radius:18px;overflow:hidden;background:#fff;color:#1d1a17;width:100%;max-width:260px}
+.art .pic{height:150px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:1.1rem;font-weight:800;border-bottom:3px solid #1d1a17}
+.art .meta{padding:10px 12px;font-size:.92rem}
+.art .meta .t{font-weight:700}
+.art .row{display:flex;justify-content:space-between;border-top:1px dashed #9a948c;padding:3px 0}
+.art button.row{all:unset;display:flex;justify-content:space-between;width:100%;border-top:1px dashed #9a948c;padding:4px 0;cursor:pointer}
+.art button.row:focus-visible{outline:3px solid var(--salmon)}
+.art button.row[aria-pressed="true"]{background:var(--sun)}
+.explain{min-height:8em}
+
+/* turn steps */
+ol.turn{list-style:none;padding:0;margin:14px 0;counter-reset:t;display:grid;gap:10px}
+ol.turn li{counter-increment:t;display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:start;background:var(--paper);border:2.5px solid var(--line);border-radius:14px;padding:12px 14px}
+ol.turn li::before{content:counter(t);width:40px;height:40px;border-radius:50%;background:var(--sun);color:#1d1a17;border:2.5px solid #1d1a17;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:1.3rem}
+
+/* spaces */
+.spaces{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:14px 0}
+.space{border:2.5px solid #1d1a17;border-radius:12px;padding:14px 10px;cursor:pointer;color:#1d1a17;font-family:var(--display);font-weight:800;font-size:1.05rem;text-align:left;min-height:70px}
+.space small{display:block;font-family:var(--body);font-weight:400;font-size:.85rem}
+.space[aria-pressed="true"]{box-shadow:5px 5px 0 #1d1a17;transform:translate(-2px,-2px)}
+.detail h3{margin-top:0}
+
+/* auction */
+.auction{display:grid;grid-template-columns:260px 1fr;gap:20px;margin-top:14px}
+.callout{font-family:var(--display);font-weight:800;font-size:clamp(2rem,6vw,3.4rem);line-height:1;min-height:1.1em;color:var(--salmon)}
+.bidnow{font-family:var(--display);font-weight:800;font-size:2.2rem;line-height:1}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.btn{border:2.5px solid #1d1a17;background:var(--sun);color:#1d1a17;border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer}
+.btn:hover{background:#ffe27a}
+.btn.alt{background:#fff}
+.btn.red{background:var(--salmon);color:#fff}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.bidders{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.bidder{border:2.5px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--paper);cursor:pointer;text-align:left}
+.bidder[aria-pressed="true"]{background:var(--sun);color:#1d1a17;border-color:#1d1a17}
+.bidder b{display:block;font-size:.95rem}
+.bidder span{font-size:.85rem;display:block}
+.log{border-top:2px dashed var(--soft);margin-top:10px;padding-top:8px;font-size:.95rem;max-height:220px;overflow:auto}
+.log p{margin:.2rem 0}
+.coll{margin-top:14px}
+.coll .g{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--soft)}
+.mini{border:2px solid #1d1a17;border-radius:6px;padding:2px 8px;font-size:.85rem;color:#1d1a17}
+.opts{display:flex;flex-wrap:wrap;gap:14px;font-size:.95rem;align-items:center}
+
+/* chart */
+.seg{display:inline-flex;border:2.5px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:8px 14px;cursor:pointer;font-weight:700}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.chart text{fill:var(--ink);font-family:var(--body)}
+.caption{color:var(--muted);max-width:66ch}
+.calc{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:14px;padding-top:14px;border-top:2px dashed var(--soft)}
+.big{font-family:var(--display);font-weight:800;font-size:1.5rem}
+ul.qs li{margin:.4rem 0}
+
+/* scorer */
+.scroll{overflow-x:auto}
+table.score{border-collapse:collapse;width:100%;min-width:560px;margin-top:10px}
+table.score th,table.score td{border:1.5px solid var(--soft);padding:6px 8px;text-align:left}
+table.score input,table.score select{width:100%;min-width:70px;padding:5px 6px;border:2px solid var(--line);border-radius:6px;background:var(--bg)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tab{border:2px solid var(--line);background:transparent;border-radius:999px;padding:5px 12px;cursor:pointer;font-weight:700}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.board{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:12px}
+.board div{border:2.5px solid var(--line);border-radius:12px;padding:10px;background:var(--paper)}
+.board b{font-family:var(--display);font-size:1.5rem;display:block}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 10px}
+.filters button{border:2px solid #1d1a17;border-radius:999px;padding:4px 12px;font-weight:700;cursor:pointer;color:#1d1a17}
+.filters button[aria-pressed="true"]{box-shadow:3px 3px 0 #1d1a17;transform:translate(-1px,-1px)}
+.catalog{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.tile{border:2.5px solid #1d1a17;border-radius:12px;padding:10px;color:#1d1a17;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:2px;min-height:118px}
+.tile b{font-family:var(--display);font-size:1.2rem;line-height:1.1}
+.tile small{font-size:.95rem}
+.tile .own{margin-top:auto;font-size:.8rem;font-weight:700;background:#fff;border:1.5px solid #1d1a17;border-radius:6px;padding:1px 6px;align-self:flex-start}
+.tile.empty{background:transparent!important;border-style:dashed;color:var(--muted);cursor:default;border-color:var(--muted)}
+.tile[aria-pressed="true"]{box-shadow:5px 5px 0 #1d1a17;transform:translate(-2px,-2px)}
+.stage{margin-top:18px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px}
+.plate{border:3px solid #1d1a17;border-radius:16px;padding:22px;color:#1d1a17;min-height:260px;display:flex;flex-direction:column}
+.plate .grp{font-weight:700;letter-spacing:.02em}
+.plate h3{font-size:clamp(1.8rem,4.5vw,3rem);margin:.3em 0 .2em}
+.plate .vals{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.plate .vals div{background:#fff;border:2px solid #1d1a17;border-radius:10px;padding:6px 10px}
+.plate .vals b{display:block;font-family:var(--display);font-size:1.6rem;line-height:1.05}
+.addform{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:end}
+.addform label{display:flex;flex-direction:column;font-size:.9rem;font-weight:700}
+.addform input,.addform select,.stage select,table.score input{padding:6px 8px;border:2px solid var(--line);border-radius:6px;background:var(--bg)}
+.addform input[type=text]{min-width:200px}
+.avatar{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;border:2.5px solid #1d1a17;color:#1d1a17;font-family:var(--display);font-weight:800;font-size:.8rem;margin-right:8px;vertical-align:middle;flex:none}
+.avatar.big{width:52px;height:52px;border-radius:14px;font-size:1.15rem;margin:0 0 8px}
+.cast .avatar.big{display:flex}
+.roster{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.seat{display:flex;gap:12px;align-items:center;background:var(--paper);border:2.5px solid var(--line);border-radius:14px;padding:10px 12px}
+.seat .avatar.big{margin:0}
+.seat > div{flex:1}
+.seat .who{display:block;font-size:.85rem;color:var(--muted)}
+.seat input{width:100%;padding:6px 8px;border:2px solid var(--line);border-radius:6px;background:var(--bg);font-weight:700}
+.ghead{grid-column:1/-1;padding:10px 0 2px;border-bottom:2px solid var(--line)}
+.ghead b{font-family:var(--display);font-size:1.25rem;margin-right:6px}
+.ghead span{color:var(--muted);font-size:.92rem}
+.tab .avatar{width:22px;height:22px;font-size:.6rem;border-width:2px;border-radius:6px;margin-right:5px}
+.bidder .avatar{width:24px;height:24px;font-size:.65rem;border-width:2px;border-radius:7px;margin-right:6px}
+.tile img{width:100%;height:84px;object-fit:cover;border:2px solid #1d1a17;border-radius:8px;margin-bottom:4px;background:#fff}
+.am{--s:1;font-size:calc(1.3rem*var(--s));position:fixed;inset:0;z-index:50;background:#f6f1ea;color:#1d1a17;display:flex;flex-direction:column;padding:calc(12px + env(safe-area-inset-top,0px)) 18px calc(12px + env(safe-area-inset-bottom,0px))}
+.am[hidden]{display:none}
+.am-top{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:2.5px solid #1d1a17}
+.am-pick{font-weight:700;display:flex;gap:8px;align-items:center}
+.am-pick select{padding:6px 8px;border:2px solid #1d1a17;border-radius:8px;background:#fff;max-width:60vw;color:#1d1a17}
+.am-body{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:22px;padding-top:14px}
+.am-art{min-height:0;border:3px solid #1d1a17;border-radius:18px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fff}
+.am-art img{width:100%;height:100%;object-fit:contain;display:block}
+.am-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:14px}
+.am-ph b{font-family:var(--display);font-size:calc(clamp(2.4rem,5vw,4.2rem)*var(--s));line-height:1}
+.am-info{min-height:0;overflow:auto;display:flex;flex-direction:column;gap:6px}
+.am-info .grp{font-weight:700;display:inline-block;border:2px solid #1d1a17;border-radius:999px;padding:2px 12px;align-self:flex-start}
+.am-info h2{font-size:calc(clamp(2.6rem,4.6vw,4.4rem)*var(--s));margin:.15em 0 0}
+.am-info .artist{font-size:calc(1.7rem*var(--s));margin:0}
+.am-info .story{font-size:calc(clamp(1.35rem,2.1vw,1.9rem)*var(--s));line-height:1.45;max-width:46ch}
+.am-bid{margin-top:auto;border-top:2.5px solid #1d1a17;padding-top:12px}
+.am-bid .now{font-family:var(--display);font-weight:800;font-size:calc(clamp(3rem,6vw,5.6rem)*var(--s));line-height:1}
+.am .bidder b{font-size:calc(1.1rem*var(--s))}
+.am .btn{font-size:calc(1.15rem*var(--s));padding:10px 16px}
+.am .callout{font-size:calc(clamp(2.2rem,4.5vw,3.8rem)*var(--s))}
+.am .log{font-size:calc(1rem*var(--s))}
+.am .bidder{background:#fff;color:#1d1a17;border-color:#1d1a17}
+.am .bidder[aria-pressed="true"]{background:var(--sun)}
+.am .log{max-height:110px;border-color:#ddd}
+.crop{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:16px}
+.crop[hidden]{display:none}
+.crop-box{background:#fff;color:#1d1a17;border:3px solid #1d1a17;border-radius:16px;padding:14px;max-width:min(96vw,900px);max-height:96vh;display:flex;flex-direction:column}
+.crop-stage{position:relative;touch-action:none;cursor:crosshair;align-self:center;min-height:0}
+.crop-stage canvas{display:block;max-width:100%;max-height:70vh}
+.crop-rect{position:absolute;border:3px dashed #e2584b;background:rgba(226,88,75,.12);pointer-events:none}
+@media (max-width:760px){.am-body{grid-template-columns:1fr;grid-template-rows:minmax(220px,45vh) auto;overflow:auto}.am-info{overflow:visible}}
+.topbar{position:sticky;top:0;z-index:20;background:var(--mint);border-bottom:2.5px solid #1d1a17;padding-top:env(safe-area-inset-top,0px)}
+:root{padding-top:0}
+.topwrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 18px;padding-top:10px;padding-bottom:10px}
+.logo{font-family:var(--display);font-weight:800;font-size:1.5rem;color:#1d1a17;background:#fff;border:2.5px solid #1d1a17;border-radius:999px;padding:4px 16px;transform:rotate(-2deg)}
+.logo b{color:var(--salmon)}
+.views{display:flex;flex-wrap:wrap;gap:6px}
+.views button{border:2px solid #1d1a17;background:#fff;color:#1d1a17;border-radius:999px;padding:6px 14px;font-weight:700;cursor:pointer;font-size:1rem}
+.views button[aria-selected="true"]{background:#1d1a17;color:#fff}
+.view{padding:26px 0 40px}
+section + section{border-top:0}
+.wrap.wide{max-width:1280px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
+.split.math{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+.headrow{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 18px}
+.headrow h2{margin:0}
+.win{font-size:1.35rem;background:var(--sun);color:#1d1a17;border:2.5px solid #1d1a17;border-radius:12px;padding:8px 14px;display:inline-block}
+.money{gap:8px}.bill{min-width:0;padding:6px 12px}.bill b{font-size:1.25rem}
+ol.turn li{padding:10px 12px}
+.cast{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cast div{padding:10px}
+.cast b{font-size:1rem}
+.spacesplit{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px;align-items:start}
+.spacesplit .spaces{margin:0;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.spacesplit .detail{position:sticky;top:90px}
+.gamegrid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:20px;align-items:start;margin-top:8px}
+.gamegrid .stage{position:sticky;top:84px;max-height:calc(100vh - 100px);overflow:auto;grid-template-columns:1fr;margin-top:0}
+.gamegrid .plate{min-height:0;padding:16px}
+.gamegrid .plate h3{font-size:clamp(1.5rem,2.6vw,2.2rem)}
+.catalog{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.ghead{padding:6px 0 0;border-bottom:0}
+.ghead b{font-size:1.1rem}.ghead span{font-size:.85rem}
+.tile{min-height:0;padding:8px}
+.tile b{font-size:1rem}
+.tile small{font-size:.82rem}
+.tile img{height:64px}
+.story strong,.am-info .story strong{background:rgba(244,209,80,.45);padding:0 .15em;border-radius:3px}
+footer{padding:28px 0 48px;color:var(--muted);font-size:.9rem;border-top:2px solid var(--line)}
+
+@media (max-width:860px){
+  .split,.split.math,.spacesplit,.gamegrid{grid-template-columns:1fr}
+  .gamegrid .stage,.spacesplit .detail{position:static;max-height:none}
+  .catalog{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cast{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:760px){
+  .anatomy,.auction{grid-template-columns:1fr}
+  .art{margin:0 auto}
+  .bidders{grid-template-columns:repeat(2,1fr)}
+  .bubble{padding:22px 30px 28px}
+  .stage{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topwrap">
+    <div class="logo"><span>Going, Going,</span> <b>Gone!</b></div>
+    <nav class="views" role="tablist" aria-label="Sections">
+      <button role="tab" data-v="rules">1 · Rules</button>
+      <button role="tab" data-v="board">2 · Cards &amp; spaces</button>
+      <button role="tab" data-v="practice">3 · Practice</button>
+      <button role="tab" data-v="math">4 · Set math</button>
+      <button role="tab" data-v="game">5 · Play</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- 1 RULES -->
+<section class="view" data-view="rules">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <h2>Aim of the game</h2>
+        <p>Buy and sell paintings at <strong>auctions</strong>, <strong>art fairs</strong> and <strong>private sales</strong>. There are <strong>9 collecting groups</strong> with <strong>4 artworks each</strong>, 36 in all.</p>
+        <div class="groups" id="groupTags"></div>
+        <p>Own <strong>3 works</strong> from one group and their value <strong>doubles</strong>. Own <strong>all 4</strong> and it <strong>triples</strong>. The game ends when <strong>no artworks are left to buy</strong> or <strong>everyone is out of money</strong>.</p>
+        <p class="win"><strong>Winner: highest total of artwork value + cash.</strong></p>
+        <h3>Setup</h3>
+        <p>One player is the <strong>Banker</strong> and gives everyone <strong>$1.5 billion</strong>:</p>
+        <div class="money">
+          <div class="bill" style="background:#f2a48f"><b>2 × $500M</b></div>
+          <div class="bill" style="background:#a9d9a0"><b>3 × $100M</b></div>
+          <div class="bill" style="background:#f4e39a"><b>2 × $50M</b></div>
+          <div class="bill" style="background:#a9d3ec"><b>3 × $20M</b></div>
+          <div class="bill" style="background:#f3c9c1"><b>4 × $10M</b></div>
+        </div>
+        <p>Deal <strong>3 artworks</strong> to each player. Everyone starts on the <strong>Venice Biennale</strong>. The <strong>Banker goes first</strong>, then play moves <strong>left</strong>, moving <strong>clockwise</strong> by the dice.</p>
+      </div>
+      <div>
+        <h2>Your turn</h2>
+        <ol class="turn">
+          <li><div><strong>Collect $50M</strong> from the Bank — every turn <strong>after the first round</strong>.</div></li>
+          <li><div><strong>Museum business</strong> (optional): <strong>lend</strong> an artwork for cash, <strong>repay</strong> a loan, or <strong>take over</strong> an overdue one. Always <strong>before you roll</strong>.</div></li>
+          <li><div><strong>Roll the dice</strong> and move <strong>clockwise</strong>.</div></li>
+          <li><div><strong>Do what your space says</strong> — see <a href="#" data-go="board">Cards &amp; spaces</a>.</div></li>
+          <li><div><strong>Pass the dice</strong> to the player on your <strong>left</strong>.</div></li>
+        </ol>
+        <h3>Pick a collector</h3>
+        <div class="cast" id="cast"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 CARDS & SPACES -->
+<section class="view" data-view="board" hidden>
+  <div class="wrap">
+    <h2>Reading an artwork card</h2>
+    <p>Every card lists <strong>four values</strong>. Tap a line to see what it means.</p>
+    <div class="anatomy">
+      <div class="art" aria-label="Example artwork card">
+        <div class="pic" style="background:#d8d2c4">Renaissance</div>
+        <div class="meta">
+          <div class="t">Mona Leonarda</div><div style="font-size:.85rem">Leonardo da Vinci</div>
+          <button class="row" data-k="reserve" aria-pressed="true"><span>Reserve</span><span>$160M</span></button>
+          <button class="row" data-k="estimate" aria-pressed="false"><span>Estimate</span><span>$220M</span></button>
+          <button class="row" data-k="set3" aria-pressed="false"><span>Set of 3</span><span>$440M</span></button>
+          <button class="row" data-k="set4" aria-pressed="false"><span>Set of 4</span><span>$660M</span></button>
+        </div>
+      </div>
+      <div class="box explain" id="explain" aria-live="polite"></div>
+    </div>
+    <h2 style="margin-top:32px">Space guide</h2>
+    <p>Tap a space to read its rule.</p>
+    <div class="spacesplit">
+      <div class="spaces" id="spaceGrid" role="group" aria-label="Board spaces"></div>
+      <div class="box detail" id="spaceDetail" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 PRACTICE -->
+<section class="view" data-view="practice" hidden>
+  <div class="wrap">
+    <div class="headrow">
+      <h2>Practise an auction</h2>
+      <div class="opts">
+        <label><input type="checkbox" id="bots" checked> Computer collectors bid too</label>
+        <button class="btn alt" id="newgame">Reset practice</button>
+      </div>
+    </div>
+    <p>Each collector starts with <strong>$1.5 billion</strong> and <strong>3 random artworks</strong>. Open an auction, choose <strong>who is bidding</strong>, raise the price, then call <strong>“Going, going, gone!”</strong> A new bid before <strong>“Gone”</strong> keeps it alive.</p>
+    <div class="auction">
+      <div>
+        <div id="lot"></div>
+        <p style="font-size:.9rem;color:var(--muted);margin-top:8px" id="deckInfo"></p>
+      </div>
+      <div class="box">
+        <div class="callout" id="callout" aria-live="assertive"></div>
+        <div>Current bid: <span class="bidnow" id="bidnow">—</span> <span id="leader"></span></div>
+        <div class="ctl">
+          <button class="btn red" id="open">Open auction</button>
+          <button class="btn" id="going" disabled>Going, going…</button>
+        </div>
+        <div><strong>Bidding as:</strong></div>
+        <div class="bidders" id="bidders" role="group" aria-label="Choose bidder"></div>
+        <div class="ctl" id="raise">
+          <button class="btn alt" data-inc="0">Bid reserve</button>
+          <button class="btn alt" data-inc="10">+$10M</button>
+          <button class="btn alt" data-inc="20">+$20M</button>
+          <button class="btn alt" data-inc="50">+$50M</button>
+          <button class="btn alt" data-inc="100">+$100M</button>
+        </div>
+        <div class="log" id="log" aria-live="polite"><p>Tap “Open auction” to reveal the top artwork.</p></div>
+      </div>
+    </div>
+    <div class="box coll">
+      <div class="tabs" id="ctabs" role="tablist"></div>
+      <div id="cview"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 MATH -->
+<section class="view" data-view="math" hidden>
+  <div class="wrap">
+    <h2>Set math: why the 3rd card matters</h2>
+    <p>Suppose every card in a group has the same <strong>Estimate, E</strong>. Watch the <strong>whole group’s value</strong> as you collect more.</p>
+    <div class="split math">
+      <div class="box">
+        <div class="seg" role="group" aria-label="Chart view">
+          <button data-m="total" aria-pressed="true">Group value</button>
+          <button data-m="marg" aria-pressed="false">Next card adds</button>
+        </div>
+        <label style="margin-left:10px;font-size:1rem"><input type="checkbox" id="linear" checked> “No bonus” line</label>
+        <svg class="chart" id="chart" viewBox="0 0 640 330" role="img" aria-label="Group value chart"></svg>
+        <p class="caption" id="caption"></p>
+      </div>
+      <div>
+        <div class="box">
+          <div class="calc" style="margin:0;padding:0;border:0">
+            <label>Estimate per card <input type="range" id="est" min="50" max="400" step="10" value="200"> <strong id="estv">$200M</strong></label>
+            <label>I own <select id="own"><option>0</option><option>1</option><option selected>2</option><option>3</option></select> cards in this group</label>
+          </div>
+          <p class="big" id="advice"></p>
+          <p class="caption" id="adviceExp"></p>
+        </div>
+        <h3>Questions to discuss</h3>
+        <ul class="qs">
+          <li>Write <strong>V(n)</strong> for n = 0…4 in terms of <strong>E</strong>. <strong>Linear? Quadratic? Neither?</strong></li>
+          <li>Why can it be smart to pay <strong>far more than the Estimate</strong> for one card?</li>
+          <li>You own <strong>2 Pop</strong> works; a rival owns the <strong>other 2</strong>. Who wants the next one more?</li>
+          <li><strong>Museum:</strong> cash now, same amount back later. A <strong>0% loan</strong>? What is the <strong>real risk</strong>?</li>
+          <li><strong>Lawyer:</strong> miss a turn, pay <strong>$200M</strong>, or destroy a <strong>$90M</strong> card you don’t need. Which is cheapest?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 PLAY -->
+<section class="view" data-view="game" hidden>
+  <div class="wrap wide">
+    <div class="headrow">
+      <div class="seg" role="tablist" aria-label="Play views">
+        <button data-sub="cat" aria-pressed="true">Catalogue</button>
+        <button data-sub="players" aria-pressed="false">Players &amp; scores</button>
+      </div>
+      <div class="ctl" style="margin:0">
+        <button class="btn red" id="amOpen">Open auction mode</button>
+        <button class="btn alt" id="bulkBtn">Import photos</button>
+      </div>
+    </div>
+    <p id="bulkMsg" style="font-weight:700;margin:4px 0 0"></p>
+
+    <div class="sub" data-sub="cat">
+      <div class="gamegrid">
+        <div>
+          <div class="filters" id="gfilter" role="group" aria-label="Filter by group"></div>
+          <div class="catalog" id="catalog"></div>
+          <p id="catCount" style="color:var(--muted);font-size:.95rem"></p>
+        </div>
+        <div class="box stage" id="stage" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="sub" data-sub="players" hidden>
+      <div class="split">
+        <div>
+          <h3 style="margin-top:12px">Players</h3>
+          <p style="color:var(--muted)">Each seat keeps its <strong>token and avatar</strong>. Type the <strong>student’s name</strong>.</p>
+          <div class="roster" id="roster"></div>
+          <div class="ctl"><button class="btn alt" id="resetNames">Clear names</button></div>
+        </div>
+        <div>
+          <h3 style="margin-top:12px">Standings</h3>
+          <p style="color:var(--muted)">Enter <strong>cash only at the end</strong>. Museum, destroyed and Bank-owned works <strong>don’t count</strong>.</p>
+          <div class="scroll">
+            <table class="score">
+              <thead><tr><th>Player</th><th>Works</th><th>Art</th><th>Cash ($M)</th><th>Total</th></tr></thead>
+              <tbody id="standings"></tbody>
+            </table>
+          </div>
+          <div class="ctl"><button class="btn alt" id="resetOwners">Start a new game</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="addWrap" hidden><div class="box addform">
+      <label>Group <select id="fGroup"></select></label>
+      <label>Title <input id="fTitle" type="text"></label>
+      <label>Artist <input id="fArtist" type="text"></label>
+      <label>Reserve ($M) <input id="fRes" type="number" min="0" step="10"></label>
+      <label>Estimate ($M) <input id="fEst" type="number" min="0" step="10"></label>
+      <button class="btn" id="fAdd">Add artwork</button>
+      <span id="fMsg" style="font-weight:700"></span>
+    </div></div>
+  </div>
+</section>
+</main>
+<div id="am" class="am" hidden role="dialog" aria-modal="true" aria-label="Auction mode">
+  <div class="am-top">
+    <label class="am-pick">Artwork <select id="amPick"></select></label>
+    <div class="ctl" style="margin:0"><button class="btn alt" id="amSmaller" aria-label="Smaller text">A−</button><button class="btn alt" id="amBigger" aria-label="Larger text">A+</button><button class="btn alt" id="amPhoto">Add a photo</button><button class="btn alt" id="amClose">Close (Esc)</button></div>
+  </div>
+  <div class="am-body">
+    <div class="am-art" id="amArt"></div>
+    <div class="am-info" id="amInfo"></div>
+  </div>
+</div>
+<div id="crop" class="crop" hidden role="dialog" aria-modal="true" aria-label="Crop photo">
+  <div class="crop-box">
+    <p id="cropTitle" style="font-family:var(--display);font-weight:800;font-size:1.2rem;margin:0 0 4px"></p>
+    <p style="margin:0 0 8px"><strong>Drag across the artwork</strong> to keep only the picture. Leave the title, prices and text out.</p>
+    <div class="crop-stage" id="cropStage"><canvas id="cropCanvas"></canvas><div class="crop-rect" id="cropRect" hidden></div></div>
+    <div class="ctl"><button class="btn alt" id="cropRot">Rotate 90°</button><button class="btn" id="cropSave">Save</button><button class="btn alt" id="cropCancel">Cancel</button><button class="btn alt" id="cropStop" hidden>Stop import</button><span id="cropMsg" style="font-size:.9rem;color:#555"></span></div>
+  </div>
+</div>
+<input type="file" id="phInput" accept="image/*" hidden><input type="file" id="phBulk" accept="image/*" multiple hidden>
+
+
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id)};
+var GROUPS=[["Renaissance","#d8d2c4",700],["Baroque","#9cc8e8",570],["Impressionism","#e9c9a4",520],["Modernism","#8fb0e8",420],["Surrealism","#f2a48f",360],["Pop","#f3c9c1",340],["Installation","#f4d150",280],["Contemporary","#f0b07a",260],["Graffiti","#9fcf8f",260]];
+var PLAYERS=[["Belinda Wilsel","Gallery owner, New York","#f2a48f"],["Danny Kan","Tech founder, Portland","#9fcf8f"],["Trey Chic","Fashion designer, Hamburg","#c8a98a"],["Marisa Sandford","Philanthropist","#9cc8e8"],["Aruna Bomba","Bollywood star","#bcd88f"],["Tony Girata","Film producer, Hollywood","#a9d3ec"]];
+
+function initials(n){return n.split(/[\s(]+/).filter(Boolean).slice(0,2).map(function(w){return w.charAt(0)}).join("").toUpperCase()}
+function avatar(i,big){var p=PLAYERS[i];return'<span class="avatar'+(big?' big':'')+'" style="background:'+p[2]+'" title="'+p[0]+'" aria-hidden="true">'+initials(p[0])+'</span>'}
+$("groupTags").innerHTML=GROUPS.map(function(g){return'<span class="tag" style="background:'+g[1]+'">'+g[0]+'</span>'}).join("");
+$("cast").innerHTML=PLAYERS.map(function(p,i){return'<div>'+avatar(i,true)+'<b>'+p[0]+'</b><small>'+p[1]+'</small></div>'}).join("");
+
+/* card anatomy */
+var EXP={
+ reserve:"<h3>Reserve</h3><p>The <strong>opening price</strong> at an Auction. Bidding starts here.</p><p>It is also what the Bank pays you if you <strong>lend this work to the Museum</strong>. Private Sale cards are bought at the Reserve too.</p>",
+ estimate:"<h3>Estimate</h3><p>The <strong>basic value</strong> of the work. If you end the game with <strong>2 or fewer works</strong> from this group, each one is worth its Estimate.</p><p>Detox: if nobody buys your purged work, the <strong>Bank buys it at the Estimate</strong>.</p>",
+ set3:"<h3>Set of 3</h3><p>The value of this card when you <strong>own 3 works</strong> from its group. <strong>All three cards go up</strong>, so the gain is big.</p><p>Mona Leonarda: $220M × 2 = $440M. On every card, Set of 3 is exactly <strong>2 × Estimate</strong>.</p>",
+ set4:"<h3>Set of 4</h3><p>The value when you <strong>own all 4 works</strong> in the group. You are the exclusive collector, and <strong>all four cards go up</strong>.</p><p>Mona Leonarda: $220M × 3 = $660M. Set of 4 is always <strong>3 × Estimate</strong>.</p>"};
+function showExp(k){$("explain").innerHTML=EXP[k];document.querySelectorAll(".art button.row").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.k===k)})}
+document.querySelectorAll(".art button.row").forEach(function(b){b.addEventListener("click",function(){showExp(b.dataset.k)})});
+showExp("reserve");
+
+/* spaces */
+var SPACES=[
+ ["Auction","#f4d150","Open an auction","<p>You become the Auctioneer. Turn over the top artwork and open bidding at its <strong>Reserve</strong>. <strong>You may bid too</strong>.</p><p>There is <strong>no bidding order</strong>: anyone calls out any amount. When bidding seems finished, call “Going, going, gone!”. If no one bids again before “Gone”, the <strong>highest bidder</strong> pays the Bank and takes the card.</p><p>Can’t pay? That bidder is fined <strong>$200 million</strong> and the work goes to the next <strong>highest bidder</strong>. No bids at all? The card goes to the <strong>bottom of the deck</strong>.</p>"],
+ ["Art Fair","#9fcf8f","Try to sell","<p>You may offer one artwork from your collection to the other players. If you do, show the card. You can name a price.</p><p>Others make offers. <strong>You don’t have to accept</strong> any of them.</p>"],
+ ["Private Sale","#f3c9c1","Buy at Reserve","<p>Take the top card of the artwork pile. You may buy it for its <strong>Reserve</strong>.</p><p>You don’t have to show the artwork, but you must show its Reserve to one other player to confirm the price. If you don’t buy it, put it on the <strong>bottom of the pile</strong> without showing anyone.</p>"],
+ ["Ask Around","#c9b6e8","Buy from a player","<p>Ask the group for <strong>one specific collecting group</strong>, e.g. “Does anyone want to sell a Baroque painting?”</p><p>Anyone can offer, and you choose who to buy from. You don’t see the artwork until a price is agreed. You can buy <strong>only one</strong>. If nothing is offered or no price is agreed, your turn ends.</p>"],
+ ["Fortune","#a9d9a0","Draw a card","<p>Take the top Fortune card and do what it says.</p>"],
+ ["Venice Biennale","#f2b880","Start · +$200M","<p>Everyone starts here. Landing here later pays you <strong>$200 million</strong> from the Bank.</p><p>It also opens a <strong>free trade</strong>: all players may buy, sell and trade artworks.</p>"],
+ ["Lawyer","#d8d2c4","Legal trouble","<p>Choose one:</p><p>• <strong>miss one turn</strong> (and you can’t take part in anything meanwhile),<br>• pay <strong>$200 million</strong> in legal fees, or<br>• <strong>destroy one of your artworks</strong>. Destroyed works go to the centre of the board and are <strong>out of the game</strong>.</p>"],
+ ["Detox","#9cc8e8","Purge an artwork","<p>You may put one of your artworks up for public auction. If nobody buys it, the Bank must buy it for its <strong>Estimate</strong>. This is <strong>optional</strong>.</p>"],
+ ["Private Island","#e2584b","Miss a turn","<p>You are on vacation and <strong>miss your next turn</strong>. You can still join in other players’ auctions and trades.</p>"],
+ ["Museum","#bfe4dc","Start of your turn","<p>Not a space you land on: you can use it at the start of any turn, <strong>before rolling</strong>.</p><p>Lend an artwork: put it in the Museum and get its <strong>Reserve</strong> from the Bank. Repay that same fee to take it back.</p><p>If you don’t repay within <strong>3 turns</strong>, any other player can pay the fee at the start of their turn and take the artwork.</p>"]];
+$("spaceGrid").innerHTML=SPACES.map(function(s,i){return'<button class="space" data-i="'+i+'" aria-pressed="false" style="background:'+s[1]+';'+(i===8?'color:#fff':'')+'">'+s[0]+'<small>'+s[2]+'</small></button>'}).join("");
+function showSpace(i){var s=SPACES[i];$("spaceDetail").innerHTML="<h3>"+s[0]+"</h3>"+s[3];document.querySelectorAll(".space").forEach(function(b){b.setAttribute("aria-pressed",+b.dataset.i===i)})}
+$("spaceGrid").addEventListener("click",function(e){var b=e.target.closest(".space");if(b)showSpace(+b.dataset.i)});
+showSpace(0);
+
+/* value helpers */
+function groupValue(cards){var n=cards.length,s=0;cards.forEach(function(c){s+=c.e});return s*(n>=4?3:n===3?2:1)}
+function artValue(cards){var by={};cards.forEach(function(c){(by[c.g]=by[c.g]||[]).push(c)});var t=0;for(var g in by)t+=groupValue(by[g]);return t}
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function fmt(m){return m>=1000?"$"+(m/1000).toFixed(m%1000?2:1).replace(/\.?0+$/,"")+"B":"$"+m+"M"}
+
+/* catalogue */
+var BUILT=[
+ {id:"b0",g:0,title:"Mona Leonarda",artist:"Leonardo da Vinci",r:160,e:220},
+ {id:"b1",g:0,title:"Nail-Filing Slave",artist:"Michelangelo Buonarroti",r:190,e:260},
+ {id:"b2",g:0,title:"The Manifestation of the Tomato (in Italy)",artist:"Sandro Botticelli",r:120,e:160},
+ {id:"b3",g:0,title:"The Poker Game",artist:"Sofonisba Anguissola",r:40,e:60},
+ {id:"b4",g:1,title:"Really Sick Bacchus",artist:"Michelangelo Merisi da Caravaggio",r:160,e:210},
+ {id:"b5",g:1,title:"Judith Shampooing Holofernes",artist:"Artemisia Gentileschi",r:90,e:120},
+ {id:"b6",g:1,title:"The Apoplectic Cavalier",artist:"Frans Hals",r:70,e:100},
+ {id:"b7",g:1,title:"The Turkey Dinner of Dr Tulp",artist:"Rembrandt van Rijn",r:100,e:140},
+ {id:"b8",g:2,title:"Haystacks",artist:"Claude Monet",r:70,e:100},
+ {id:"b9",g:2,title:"Mon déjeuner sur l’herbe",artist:"Berthe Morisot",r:40,e:60},
+ {id:"b10",g:2,title:"Ear",artist:"Vincent Van Gogh",r:150,e:200},
+ {id:"b11",g:2,title:"Pastorales Tahitiennes",artist:"Paul Gauguin",r:120,e:160},
+ {id:"b12",g:3,title:"The Uncontrollable Giggle",artist:"Edvard Munch",r:100,e:140},
+ {id:"b13",g:3,title:"A Rose Is a Rose Is a Rose Is a Rose",artist:"Georgia O’Keeffe",r:70,e:100},
+ {id:"b14",g:3,title:"American Goths",artist:"Grant Wood",r:40,e:60},
+ {id:"b15",g:3,title:"Times Square Traffic Jam",artist:"Piet Mondrian",r:90,e:120},
+ {id:"b16",g:4,title:"Eating Gypsy",artist:"Le Douanier Rousseau",r:60,e:80},
+ {id:"b17",g:4,title:"Ceci est une cigarette",artist:"René Magritte",r:70,e:100},
+ {id:"b18",g:4,title:"Le burger en fourrure",artist:"Meret Oppenheim",r:30,e:40},
+ {id:"b19",g:4,title:"Self-Portrait with Beehive",artist:"Frida Kahlo",r:100,e:140},
+ {id:"b20",g:5,title:"Lady Gaga",artist:"Andy Warhol",r:100,e:140},
+ {id:"b21",g:5,title:"I’m Just Transferring You.",artist:"Roy Lichtenstein",r:90,e:120},
+ {id:"b22",g:5,title:"Untitled Film Still #5022",artist:"Cindy Sherman",r:30,e:40},
+ {id:"b23",g:5,title:"You Just Stepped On My Toe",artist:"Barbara Kruger",r:30,e:40},
+ {id:"b24",g:6,title:"Papa",artist:"Louise Bourgeois",r:60,e:80},
+ {id:"b25",g:6,title:"All the Eternal Love I Have for Aubergines",artist:"Yayoi Kusama",r:70,e:100},
+ {id:"b26",g:6,title:"How to Explain Pictures to a Dead Man",artist:"Josef Beuys",r:40,e:60},
+ {id:"b27",g:6,title:"Present",artist:"Christo and Jeanne-Claude",r:30,e:40},
+ {id:"b28",g:7,title:"The Artist Is Living in Your Home",artist:"Marina Abramović",r:30,e:40},
+ {id:"b29",g:7,title:"Little Big Pony",artist:"Jeff Koons",r:70,e:100},
+ {id:"b30",g:7,title:"The Essential Saltiness of the Pickling Process in the Mind of the Consumer",artist:"Damien Hirst",r:40,e:60},
+ {id:"b31",g:7,title:"Every Pillow I Have Ever Slept With",artist:"Tracey Emin",r:40,e:60},
+ {id:"b32",g:8,title:"My Homepage",artist:"Jean-Michel Basquiat",r:90,e:120},
+ {id:"b33",g:8,title:"Self-Portrait",artist:"Banksy",r:30,e:40},
+ {id:"b34",g:8,title:"Pop Plane",artist:"Keith Haring",r:60,e:80},
+ {id:"b35",g:8,title:"Don’t Mess with Missy",artist:"Miss Van",r:10,e:20}];
+var HKEY="ggg-helper-v1",H=null;
+try{H=JSON.parse(localStorage.getItem(HKEY))}catch(e){H=null}
+if(!H||!H.owner)H={custom:[],owner:{},names:PLAYERS.map(function(p){return p[0]}),cash:["","","","","",""]};
+function hsave(){try{localStorage.setItem(HKEY,JSON.stringify(H))}catch(e){}}
+if(!H.names||H.names.length!==6)H.names=PLAYERS.map(function(p){return p[0]});
+function allCards(){var n={};BUILT.forEach(function(c){n[c.g]=(n[c.g]||0)+1});return BUILT.concat(H.custom.filter(function(c){return(n[c.g]||0)<4}))}
+function pname(i){return H.names[i]||PLAYERS[i][0]}
+
+/* auction practice */
+var A;
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var x=a[i];a[i]=a[j];a[j]=x}return a}
+function newPractice(){
+  var deck=[],id=0;
+  GROUPS.forEach(function(g,gi){var real=allCards().filter(function(c){return c.g===gi}).slice(0,4);
+    real.forEach(function(c){deck.push({id:id++,g:gi,e:c.e,r:c.r,title:c.title,artist:c.artist})});
+    var left=g[2]-real.reduce(function(a,c){return a+c.e},0),miss=4-real.length,each=Math.round(left/Math.max(1,miss)/10)*10;
+    for(var k=real.length;k<4;k++){var e=Math.max(10,k===3?left-(miss-1)*each:each);deck.push({id:id++,g:gi,n:k+1,e:e,r:Math.round(e*0.75/10)*10})}});
+  shuffle(deck);
+  A={deck:deck,players:PLAYERS.map(function(p){return{name:p[0],color:p[2],cash:1500,cards:[]}}),me:0,lot:null,bids:[],phase:"idle",tab:0,timer:null,botT:null};
+  for(var r=0;r<3;r++)A.players.forEach(function(p){p.cards.push(A.deck.shift())});
+  $("log").innerHTML="<p>Each collector has $1.5B and 3 artworks. Tap “Open auction”.</p>";
+  $("callout").textContent="";
+  renderA();
+}
+function cardBox(c){var g=GROUPS[c.g];return'<div class="art"><div class="pic" style="background:'+g[1]+'">'+g[0]+'</div><div class="meta"><div class="t">'+(c.title?esc(c.title)+'</div><div style="font-size:.85rem">'+esc(c.artist):g[0]+' work #'+c.n+' (example)')+'</div>'+
+  '<div class="row"><span>Reserve</span><span>'+fmt(c.r)+'</span></div><div class="row"><span>Estimate</span><span>'+fmt(c.e)+'</span></div><div class="row"><span>Set of 3</span><span>'+fmt(c.e*2)+'</span></div><div class="row"><span>Set of 4</span><span>'+fmt(c.e*3)+'</span></div></div></div>'}
+function top(){if(!A.bids.length)return null;return A.bids[A.bids.length-1]}
+function renderA(){
+  $("lot").innerHTML=A.lot?cardBox(A.lot):'<div class="art"><div class="pic" style="background:var(--soft);color:var(--muted)">Face-down deck</div><div class="meta">Open an auction to reveal the top card.</div></div>';
+  $("deckInfo").textContent=A.deck.length+" artworks left in the deck.";
+  var t=top();
+  $("bidnow").textContent=A.lot?(t?fmt(t.amt):"opens at "+fmt(A.lot.r)):"—";
+  $("leader").textContent=t?"by "+pname(t.p):"";
+  $("open").disabled=A.phase!=="idle"||!A.deck.length;
+  $("going").disabled=!(A.phase==="open"&&t);
+  document.querySelectorAll("#raise button").forEach(function(b){var inc=+b.dataset.inc;b.disabled=A.phase==="idle"||A.phase==="sold"||(inc===0&&!!t)||(inc>0&&!t)});
+  $("bidders").innerHTML=A.players.map(function(p,i){var gv=A.lot?A.players[i].cards.filter(function(c){return c.g===A.lot.g}).length:0;
+    return'<button class="bidder" data-p="'+i+'" aria-pressed="'+(i===A.me)+'"><b>'+avatar(i)+esc(pname(i))+'</b><span>Cash '+fmt(p.cash)+'</span><span>'+(A.lot?"Owns "+gv+" "+GROUPS[A.lot.g][0]:"")+'</span></button>'}).join("");
+  $("ctabs").innerHTML=A.players.map(function(p,i){return'<button class="tab" role="tab" data-t="'+i+'" aria-selected="'+(i===A.tab)+'">'+avatar(i)+esc(pname(i))+'</button>'}).join("");
+  var p=A.players[A.tab],pi=A.tab,by={};p.cards.forEach(function(c){(by[c.g]=by[c.g]||[]).push(c)});
+  var av=artValue(p.cards);
+  $("cview").innerHTML='<p>'+avatar(pi)+'<strong>'+esc(pname(pi))+'</strong>: cash '+fmt(p.cash)+' + artworks '+fmt(av)+' = <strong>'+fmt(p.cash+av)+'</strong></p>'+
+    Object.keys(by).map(function(g){var cs=by[g],n=cs.length;return'<div class="g"><span class="mini" style="background:'+GROUPS[g][1]+'">'+GROUPS[g][0]+' × '+n+'</span>'+cs.map(function(c){return'<span style="font-size:.85rem">est. '+fmt(c.e)+'</span>'}).join(" ")+
+      '<span style="margin-left:auto;font-weight:700">'+fmt(groupValue(cs))+(n>=3?' (×'+(n>=4?3:2)+')':'')+'</span></div>'}).join("");
+}
+function log(h){$("log").insertAdjacentHTML("afterbegin","<p>"+h+"</p>")}
+function bid(p,inc){
+  if(!A.lot||A.phase==="idle"||A.phase==="sold")return false;
+  var t=top();var amt=t?t.amt+inc:A.lot.r;
+  if(t&&inc<=0)return false;
+  if(t&&t.p===p)return false;
+  A.bids.push({p:p,amt:amt});
+  if(A.phase==="going1"||A.phase==="going2"){clearTimeout(A.timer);A.phase="open";$("callout").textContent="New bid!";log("New bid before “Gone” — the auction stays open.")}
+  log(esc(pname(p))+" bids "+fmt(amt)+".");
+  renderA();return true;
+}
+function worth(p){var own=A.players[p].cards.filter(function(c){return c.g===A.lot.g});var before=groupValue(own);var after=groupValue(own.concat([A.lot]));return after-before}
+function botTick(){
+  if(!$("bots").checked||!A.lot||A.phase==="idle"||A.phase==="sold")return;
+  var t=top();var cur=t?t.amt:A.lot.r-10;
+  var cand=[];A.players.forEach(function(p,i){if(i===A.me)return;if(t&&t.p===i)return;
+    var lim=Math.min(p.cash,Math.round(worth(i)*(0.55+((i*37)%30)/100)));if(lim>=cur+10)cand.push([i,lim])});
+  if(!cand.length||Math.random()<0.35)return;
+  var c=cand[Math.floor(Math.random()*cand.length)];
+  var inc=t?[10,10,20,50][Math.floor(Math.random()*4)]:0;
+  if(t&&cur+inc>c[1])inc=10;
+  bid(c[0],inc);
+}
+function openAuction(){
+  if(A.phase!=="idle"||!A.deck.length)return;
+  A.lot=A.deck.shift();A.bids=[];A.phase="open";$("callout").textContent="Bidding open";
+  log("<strong>New auction:</strong> "+GROUPS[A.lot.g][0]+" work, Reserve "+fmt(A.lot.r)+", Estimate "+fmt(A.lot.e)+".");
+  clearInterval(A.botT);A.botT=setInterval(botTick,1100);
+  renderA();
+}
+function going(){
+  if(A.phase!=="open"||!top())return;
+  A.phase="going1";$("callout").textContent="Going…";renderA();
+  A.timer=setTimeout(function(){if(A.phase!=="going1")return;A.phase="going2";$("callout").textContent="Going…";renderA();
+    A.timer=setTimeout(function(){if(A.phase!=="going2")return;gone()},1800)},1800);
+}
+function gone(){
+  A.phase="sold";clearInterval(A.botT);$("callout").textContent="Gone!";
+  var bids=A.bids.slice(),fined={};
+  while(bids.length){
+    var b=bids[bids.length-1];
+    var pl=A.players[b.p];
+    if(pl.cash>=b.amt){pl.cash-=b.amt;pl.cards.push(A.lot);log("<strong>Sold</strong> to "+esc(pname(b.p))+" for "+fmt(b.amt)+". It adds "+fmt(groupValue(pl.cards.filter(function(c){return c.g===A.lot.g}))-groupValue(pl.cards.filter(function(c){return c.g===A.lot.g&&c!==A.lot})))+" to their collection value.");A.tab=b.p;break}
+    if(!fined[b.p]){fined[b.p]=1;pl.cash=Math.max(0,pl.cash-200);log(esc(pname(b.p))+" can’t pay "+fmt(b.amt)+" and is fined $200M. The work goes to the next highest bidder.")}
+    bids=bids.filter(function(x){return x.p!==b.p});
+  }
+  if(!bids.length&&A.lot&&!A.players.some(function(p){return p.cards.indexOf(A.lot)>=0})){A.deck.push(A.lot);log("No valid buyer, so the card goes to the bottom of the deck.")}
+  setTimeout(function(){A.lot=null;A.phase="idle";A.bids=[];renderA()},1600);
+  renderA();
+}
+$("open").addEventListener("click",openAuction);
+$("going").addEventListener("click",going);
+$("newgame").addEventListener("click",function(){clearTimeout(A.timer);clearInterval(A.botT);newPractice()});
+$("bidders").addEventListener("click",function(e){var b=e.target.closest(".bidder");if(b){A.me=+b.dataset.p;renderA()}});
+$("raise").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;if(!bid(A.me,+b.dataset.inc)){var t=top();if(t&&t.p===A.me)log(esc(pname(A.me))+" already has the top bid.")}});
+$("ctabs").addEventListener("click",function(e){var b=e.target.closest(".tab");if(b){A.tab=+b.dataset.t;renderA()}});
+newPractice();
+
+/* chart */
+var mode="total";
+function V(n,E){return n<=2?n*E:n===3?6*E:12*E}
+function drawChart(){
+  var E=+$("est").value,W=640,H=330,L=64,R=18,T=26,B=44,pw=W-L-R,ph=H-T-B;
+  var xs=mode==="total"?[0,1,2,3,4]:[1,2,3,4];
+  var data=xs.map(function(n){return mode==="total"?V(n,E):V(n,E)-V(n-1,E)});
+  var ymax=mode==="total"?12*E:6*E;var nice=Math.pow(10,Math.floor(Math.log10(ymax)));var step=Math.ceil(ymax/5/nice*2)/2*nice;ymax=step*Math.ceil(ymax/step);
+  var cnt=xs.length,x=function(i){return L+pw*(i+0.5)/cnt},y=function(v){return T+ph*(1-v/ymax)};
+  var s="";
+  for(var g=0;g<=ymax+0.1;g+=step)s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(g)+'" y2="'+y(g)+'" stroke="var(--soft)"/><text x="'+(L-8)+'" y="'+(y(g)+5)+'" text-anchor="end" font-size="12">'+fmt(Math.round(g))+'</text>';
+  var bw=pw/cnt*0.55;
+  data.forEach(function(v,i){var n=xs[i];var hot=n>=3;
+    s+='<rect x="'+(x(i)-bw/2)+'" y="'+y(v)+'" width="'+bw+'" height="'+Math.max(0,y(0)-y(v))+'" rx="6" fill="'+(hot?"#e2584b":"#9cc8e8")+'" stroke="#1d1a17" stroke-width="2.5"/>';
+    s+='<text x="'+x(i)+'" y="'+(y(v)-8)+'" text-anchor="middle" font-size="14" font-weight="700">'+(mode==="marg"?"+":"")+fmt(v)+'</text>';
+    s+='<text x="'+x(i)+'" y="'+(H-B+22)+'" text-anchor="middle" font-size="14">'+(mode==="total"?n+" owned":(n===1?"1st":n===2?"2nd":n===3?"3rd":"4th")+" card")+'</text>'});
+  if($("linear").checked){
+    var pts=xs.map(function(n,i){return x(i)+","+y(mode==="total"?n*E:E)}).join(" ");
+    s+='<polyline points="'+pts+'" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-dasharray="7 6"/>';
+  }
+  s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(0)+'" y2="'+y(0)+'" stroke="var(--ink)" stroke-width="2"/>';
+  $("chart").innerHTML=s;
+  $("caption").textContent=mode==="total"
+    ?"Group value: 0, E, 2E, 6E, 12E. With E = "+fmt(E)+" that is 0, "+fmt(E)+", "+fmt(2*E)+", "+fmt(6*E)+", "+fmt(12*E)+". The dashed line is what you’d get with no set bonus (n × E)."
+    :"The 1st and 2nd cards each add E. The 3rd card adds 4E (all three double), and the 4th adds 6E (all four triple). The dashed line shows E, the value with no bonus.";
+  var own=+$("own").value,add=V(own+1,E)-V(own,E);
+  $("estv").textContent=fmt(E);
+  $("advice").textContent="The next card is worth +"+fmt(add)+" to you";
+  $("adviceExp").textContent="You own "+own+": group value "+fmt(V(own,E))+". With one more: "+fmt(V(own+1,E))+". Any price below "+fmt(add)+" still raises your final score — if you can afford it and still pay your other bills.";
+}
+document.querySelectorAll(".seg button").forEach(function(b){b.addEventListener("click",function(){mode=b.dataset.m;document.querySelectorAll(".seg button").forEach(function(o){o.setAttribute("aria-pressed",o===b)});drawChart()})});
+["est","own","linear"].forEach(function(id){$(id).addEventListener("input",drawChart)});
+drawChart();
+
+var STORY={"b0": "Leonardo painted the Mona Lisa in the early 1500s, and people still argue about who sat for it. This parody offers an answer: the sitter has the painter’s own beard.", "b1": "Michelangelo carved a group of struggling “captive” figures for Pope Julius II’s tomb; two of them are now in the Louvre. This imagined extra captive isn’t struggling at all. He is doing his nails.", "b2": "In Botticelli’s Birth of Venus, the goddess arrives from the sea on a giant shell. Here the shell delivers a tomato, a fruit that only reached Italy from the Americas in the 1500s.", "b3": "Sofonisba Anguissola was one of the few famous women painters of the Renaissance and became a court painter in Spain. She painted her sisters playing chess; this version swaps the chess for poker.", "b4": "Caravaggio once painted himself as Bacchus, the Roman god of wine, looking pale and unwell. This version pushes the joke much further.", "b5": "Artemisia Gentileschi was one of the most successful painters of the Baroque, known for strong women from Bible stories, like Judith defeating the general Holofernes. In this version, Judith is washing his hair.", "b6": "Frans Hals’s Laughing Cavalier is famous for its smug grin. This “sequel” shows the moment after someone throws a glass of red wine at him.", "b7": "Rembrandt’s group portrait of Dr Tulp shows a surgeon giving an anatomy lesson to a room of serious men. The parody swaps the lesson for a holiday turkey.", "b8": "Monet painted the same haystacks again and again to study how light changes through the day and the seasons. This one adds a burning getaway car.", "b9": "Berthe Morisot was the only woman in the first Impressionist exhibition in 1874. Manet’s famous Luncheon on the Grass showed dressed men picnicking with an undressed woman; this version flips who is wearing clothes.", "b10": "Van Gogh had a troubled time in the south of France and famously injured his own ear. The parody shows the ear itself, wrapped up like a parcel.", "b11": "Gauguin left France for Tahiti looking for a simpler life, and he often saw himself as a misunderstood martyr. This painting puts that feeling right in the middle of the picture.", "b12": "Munch’s The Scream is the world’s most famous picture of panic. Here the same figure on the same bridge can’t stop laughing.", "b13": "Georgia O’Keeffe is known for giant close-up flowers and the deserts of New Mexico. The title borrows a famous line by the writer Gertrude Stein.", "b14": "Grant Wood’s American Gothic (1930) shows a stern farmer and a woman in front of their farmhouse. This parody imagines their great-grandchildren as goths.", "b15": "Mondrian built his paintings from straight black lines and blocks of red, yellow and blue, and in New York he painted Broadway Boogie Woogie. This one turns his grid into gridlock.", "b16": "Henri Rousseau painted The Sleeping Gypsy, a lion standing over a sleeping traveller in the desert. This parody shows what the lion did next. Note: “Gypsy” is the old title of the painting, but many Roma people consider the word a slur.", "b17": "Magritte painted a pipe with the words “This is not a pipe”, because it is a picture of a pipe, not a real one. This parody says the opposite about a cigarette.", "b18": "In 1936 Meret Oppenheim covered a teacup, saucer and spoon in fur, one of the best-known Surrealist objects ever made. Here it is a fur burger.", "b19": "Frida Kahlo painted dozens of self-portraits, many after a bus accident left her in lifelong pain. This one gives her a beehive hairdo, bees included.", "b20": "Andy Warhol made brightly coloured, repeated portraits of celebrities like Marilyn Monroe. He died in 1987, a year after Lady Gaga was born. That is the joke.", "b21": "Roy Lichtenstein painted giant comic-book panels, dots and all. This one imagines what he would make of a call-centre headset.", "b22": "Cindy Sherman photographs herself playing characters in imaginary movie scenes. Here she plays Katniss from The Hunger Games.", "b23": "Barbara Kruger lays bold red-and-white slogans over photographs to make sharp points about society. This slogan is about something smaller: a sore toe.", "b24": "Louise Bourgeois is famous for Maman, a giant spider sculpture over 9 metres tall. This imagined “Papa” is a giant tick.", "b25": "Yayoi Kusama fills mirrored rooms with polka dots and her famous spotted pumpkins. This mirror room is full of spotted aubergines (eggplants).", "b26": "In 1965 Joseph Beuys spent hours explaining pictures to a dead hare, his head covered in honey and gold leaf. In this version the hare does the explaining.", "b27": "Christo and Jeanne-Claude wrapped enormous things in fabric, including the Reichstag building in Berlin. This piece wraps something as a gift.", "b28": "In 2010 Marina Abramović sat silently at New York’s Museum of Modern Art for more than 700 hours while visitors took turns sitting across from her. This version moves her into your living room.", "b29": "Jeff Koons is known for giant shiny balloon-dog sculptures and a huge puppy made of flowers. Here a toy pony becomes a beach-sized monument.", "b30": "Damien Hirst became famous for a shark preserved in a tank and for very long titles. This early piece preserves a pickle.", "b31": "Tracey Emin makes very personal art; one famous piece is simply her own unmade bed. This one is a tower of her old pillows.", "b32": "Jean-Michel Basquiat moved from New York street graffiti to top galleries before his death in 1988, often painting crowns and raw, angry faces. This imagines him designing a social media page.", "b33": "Nobody publicly knows who Banksy is. This “self-portrait” still doesn’t tell you.", "b34": "Keith Haring’s bold dancing figures appeared in New York subway stations and murals, and in 1986 he opened his Pop Shop. Here his figures cover a jet plane.", "b35": "Miss Van, a street artist from Toulouse, France, paints confident cartoon “dolls” on city walls. This doll is standing up for herself."};
+var PH={};
+var HL=["Mona Lisa","Louvre","Birth of Venus","tomato","chess","poker","Bacchus","Judith","Laughing Cavalier","glass of red wine","anatomy lesson","turkey","haystacks","burning getaway car","only woman","Luncheon on the Grass","injured his own ear","Tahiti","martyr","The Scream","laughing","giant close-up flowers","Gertrude Stein","American Gothic","goths","Broadway Boogie Woogie","gridlock","The Sleeping Gypsy","what the lion did next","“This is not a pipe”","covered a teacup, saucer and spoon in fur","fur burger","self-portraits","beehive hairdo","Marilyn Monroe","a year after Lady Gaga was born","comic-book panels","call-centre headset","Katniss","The Hunger Games","red-and-white slogans","sore toe","Maman","giant tick","polka dots","aubergines","dead hare","the hare does the explaining","wrapped enormous things in fabric","as a gift","more than 700 hours","into your living room","balloon-dog","beach-sized monument","shark preserved in a tank","pickle","unmade bed","old pillows","street graffiti","social media page","Nobody publicly knows who Banksy is","still doesn’t tell you","subway stations","Pop Shop","jet plane","Toulouse","standing up for herself","a slur"];
+function hl(t){var h=esc(t);HL.forEach(function(k){var e=esc(k);var i=h.indexOf(e);if(i>=0)h=h.slice(0,i)+"<strong>"+e+"</strong>"+h.slice(i+e.length)});return h}
+/* game helper */
+var filt=-1,sel=null,AU=null;
+var OWN=[["deck","In deck"],["museum","Museum"],["destroyed","Destroyed"],["bank","Bought by Bank"]];
+function ownerLabel(o){if(o===undefined||o==="deck")return"In deck";if(typeof o==="number")return H.names[o]||PLAYERS[o][0];for(var i=0;i<OWN.length;i++)if(OWN[i][0]===o)return OWN[i][1];return o}
+function ownerOf(id){var o=H.owner[id];return o===undefined?"deck":o}
+function renderFilters(){
+  $("gfilter").innerHTML='<button data-g="-1" aria-pressed="'+(filt===-1)+'" style="background:#fff">All groups</button>'+GROUPS.map(function(g,i){return'<button data-g="'+i+'" aria-pressed="'+(filt===i)+'" style="background:'+g[1]+'">'+g[0]+'</button>'}).join("");
+}
+function renderCatalog(){
+  var cards=allCards(),html="";
+  GROUPS.forEach(function(g,gi){if(filt!==-1&&filt!==gi)return;
+    var cs=cards.filter(function(c){return c.g===gi});var sum=cs.reduce(function(a,c){return a+c.e},0);
+    html+='<div class="ghead"><b>'+g[0]+'</b> <span>'+cs.length+' of 4 entered. A full set of 4 is worth '+fmt(g[2]*3)+(cs.length<4?'; the missing Estimates add up to '+fmt(g[2]-sum):'')+'.</span></div>';
+    cs.forEach(function(c){html+='<button class="tile" data-id="'+c.id+'" aria-pressed="'+(sel===c.id)+'" style="background:'+g[1]+'">'+(PH[c.id]?'<img src="'+PH[c.id]+'" alt="">':'')+'<small>'+g[0]+'</small><b>'+esc(c.title)+'</b><small>'+esc(c.artist)+'</small><small>Est. '+fmt(c.e)+'</small><span class="own">'+esc(ownerLabel(ownerOf(c.id)))+'</span></button>'});
+    for(var k=cs.length;k<4;k++)html+='<div class="tile empty"><small>'+g[0]+'</small><b>Not added yet</b><small>Use the form below</small></div>';
+  });
+  $("catalog").innerHTML=html;
+  $("catCount").textContent=cards.length+" of 36 artworks entered.";
+}
+function card(id){return allCards().filter(function(c){return c.id===id})[0]}
+function ownerOptions(cur){
+  var o=PLAYERS.map(function(p,i){return'<option value="'+i+'"'+(cur===i?" selected":"")+'>'+esc(H.names[i]||p[0])+'</option>'}).join("");
+  return OWN.map(function(x){return'<option value="'+x[0]+'"'+(cur===x[0]?" selected":"")+'>'+x[1]+'</option>'}).join("")+o;
+}
+function renderStage(){renderStage0();if(amIsOpen())renderAM()}
+function renderStage0(){
+  var c=sel&&card(sel);
+  if(!c){$("stage").innerHTML='<p style="margin:0">Tap an artwork above to show it here.</p>';return}
+  var g=GROUPS[c.g],cur=ownerOf(c.id);
+  var left='<div class="plate" style="background:'+g[1]+'"><span class="grp">'+g[0]+'</span><h3>'+esc(c.title)+'</h3><div><strong>'+esc(c.artist)+'</strong></div><p class="story" style="font-size:.98rem;margin:.5em 0">'+hl(STORY[c.id]||"")+'</p>'+
+    '<div class="vals"><div>Reserve<b>'+fmt(c.r)+'</b></div><div>Estimate<b>'+fmt(c.e)+'</b></div><div>Set of 3<b>'+fmt(c.e*2)+'</b></div><div>Set of 4<b>'+fmt(c.e*3)+'</b></div></div></div>';
+  var right='<div><label><strong>Owner</strong><br><select id="ownSel">'+ownerOptions(cur)+'</select></label>';
+  if(c.id.charAt(0)==="c")right+=' <button class="btn alt" id="delCard" style="margin-left:6px">Remove this entry</button>';
+  if(!AU||AU.id!==c.id){
+    right+='<div class="ctl" style="margin-top:14px"><button class="btn red" id="auStart">Auction this artwork</button><button class="btn" id="amOpen2">Show in auction mode</button></div><div class="ctl"><button class="btn alt" id="phAdd">'+(PH[c.id]?'Replace photo':'Add a photo')+'</button>'+(PH[c.id]?'<button class="btn alt" id="phDel">Remove photo</button>':'')+'</div><p class="caption">Opens at the Reserve. Use it for Auction spaces and Detox sales.</p></div>';
+  }else{
+    var t=AU.bids[AU.bids.length-1];
+    right+='<div class="callout" style="margin-top:12px">'+AU.call+'</div><div>Current bid: <span class="bidnow">'+(t?fmt(t.amt):"opens at "+fmt(c.r))+'</span> '+(t?"by "+esc(H.names[t.p]):"")+'</div>'+
+      '<div class="bidders" id="hBidders">'+PLAYERS.map(function(p,i){return'<button class="bidder" data-p="'+i+'" aria-pressed="'+(AU.who===i)+'"><b>'+avatar(i)+esc(pname(i))+'</b></button>'}).join("")+'</div>'+
+      '<div class="ctl" id="hRaise">'+(t?'':'<button class="btn alt" data-inc="0">Bid reserve</button>')+(t?[10,20,50,100].map(function(v){return'<button class="btn alt" data-inc="'+v+'">+$'+v+'M</button>'}).join(""):'')+'</div>'+
+      '<div class="ctl"><button class="btn" id="hGoing"'+(t&&AU.phase==="open"?"":" disabled")+'>Going, going…</button>'+
+      (AU.phase==="sold"?'<button class="btn alt" id="hNopay">Winner can’t pay</button><button class="btn alt" id="hDone">Done</button>':'<button class="btn alt" id="hCancel">No bids — cancel</button>')+'</div>'+
+      '<div class="log">'+AU.log.map(function(l){return"<p>"+l+"</p>"}).join("")+'</div></div>';
+  }
+  $("stage").innerHTML=left+right;
+}
+function renderStandings(){
+  var cards=allCards();
+  $("standings").innerHTML=PLAYERS.map(function(p,i){var mine=cards.filter(function(c){return ownerOf(c.id)===i});var av=artValue(mine);var tot=av+(+H.cash[i]||0);
+    return'<tr><td>'+avatar(i)+esc(pname(i))+'</td><td>'+mine.length+'</td><td>'+fmt(av)+'</td><td><input type="number" min="0" step="10" data-c="'+i+'" value="'+esc(H.cash[i])+'" aria-label="Cash"></td><td><strong class="tot" data-t="'+i+'">'+fmt(tot)+'</strong></td></tr>'}).join("");
+}
+function updTotals(){var cards=allCards();PLAYERS.forEach(function(p,i){var av=artValue(cards.filter(function(c){return ownerOf(c.id)===i}));var el=document.querySelector('[data-t="'+i+'"]');if(el)el.textContent=fmt(av+(+H.cash[i]||0))})}
+function renderHelper(){renderRoster();renderFilters();renderCatalog();renderStage();renderStandings()}
+function hlog(t){AU.log.unshift(t)}
+function hbid(inc){
+  var c=card(AU.id),t=AU.bids[AU.bids.length-1];if(AU.phase==="sold")return;
+  if(t&&t.p===AU.who){hlog(esc(H.names[AU.who])+" already has the top bid.");renderStage();return}
+  var amt=t?t.amt+inc:c.r;AU.bids.push({p:AU.who,amt:amt});
+  if(AU.phase!=="open"){clearTimeout(AU.timer);AU.phase="open";hlog("New bid before “Gone” — still open.")}
+  AU.call="Bidding open";hlog(esc(H.names[AU.who])+" bids "+fmt(amt)+".");renderStage();
+}
+function hgoing(){AU.phase="g1";AU.call="Going…";renderStage();
+  AU.timer=setTimeout(function(){if(AU.phase!=="g1")return;AU.phase="g2";AU.call="Going…";renderStage();
+    AU.timer=setTimeout(function(){if(AU.phase!=="g2")return;hsold()},1800)},1800)}
+function hsold(){var t=AU.bids[AU.bids.length-1];AU.phase="sold";AU.call="Gone!";H.owner[AU.id]=t.p;hsave();
+  hlog("<strong>Sold to "+esc(H.names[t.p])+" for "+fmt(t.amt)+".</strong> They pay the Bank.");renderCatalog();renderStage();renderStandings()}
+function hnopay(){var t=AU.bids[AU.bids.length-1];var p=t.p;
+  AU.bids=AU.bids.filter(function(b){return b.p!==p});
+  hlog(esc(H.names[p])+" can’t pay: fined $200M (take it from their cash).");
+  var n=AU.bids[AU.bids.length-1];
+  if(n){H.owner[AU.id]=n.p;hlog("<strong>Offered to "+esc(H.names[n.p])+" at "+fmt(n.amt)+".</strong>")}
+  else{H.owner[AU.id]="deck";hlog("No other bidder: the artwork goes to the bottom of the deck.")}
+  hsave();renderCatalog();renderStage();renderStandings()}
+
+$("gfilter").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;filt=+b.dataset.g;renderFilters();renderCatalog()});
+$("catalog").addEventListener("click",function(e){var b=e.target.closest(".tile[data-id]");if(!b)return;sel=b.dataset.id;if(AU&&AU.id!==sel){clearTimeout(AU.timer);AU=null}renderCatalog();renderStage();
+  if(window.matchMedia("(max-width:760px)").matches)$("stage").scrollIntoView({block:"start"})});
+$("stage").addEventListener("change",function(e){if(e.target.id!=="ownSel")return;var v=e.target.value;H.owner[sel]=/^\d$/.test(v)?+v:v;hsave();renderCatalog();renderStandings()});
+$("stage").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+  if(b.id==="amOpen2"){openAM();return}
+  if(b.id==="phAdd"){pickPhoto(sel);return}
+  if(b.id==="phDel"){if(confirm("Remove this photo?"))delPhoto(sel);return}
+  if(b.id==="auStart"){AU={id:sel,bids:[],who:0,phase:"open",call:"Bidding open",log:["Auction opens at "+fmt(card(sel).r)+"."]};renderStage();return}
+  if(b.id==="delCard"){if(confirm("Remove this artwork entry?")){H.custom=H.custom.filter(function(c){return c.id!==sel});delete H.owner[sel];sel=null;hsave();renderHelper()}return}
+  if(!AU)return;
+  if(b.dataset.p!==undefined&&b.closest("#hBidders")){AU.who=+b.dataset.p;renderStage();return}
+  if(b.dataset.inc!==undefined){hbid(+b.dataset.inc);return}
+  if(b.id==="hGoing"){hgoing();return}
+  if(b.id==="hNopay"){hnopay();return}
+  if(b.id==="hDone"||b.id==="hCancel"){clearTimeout(AU.timer);AU=null;renderStage()}
+});
+$("standings").addEventListener("input",function(e){var el=e.target;
+  if(el.dataset.c!==undefined){H.cash[+el.dataset.c]=el.value;hsave();updTotals()}});
+function renderRoster(){$("roster").innerHTML=PLAYERS.map(function(p,i){return'<div class="seat">'+avatar(i,true)+'<div><label for="nm'+i+'" class="who">Plays as '+p[0]+'</label><input id="nm'+i+'" data-n="'+i+'" maxlength="24" value="'+esc(H.names[i]===p[0]?"":H.names[i])+'" placeholder="Type a name"></div></div>'}).join("")}
+$("roster").addEventListener("input",function(e){var el=e.target;if(el.dataset.n===undefined)return;var i=+el.dataset.n;H.names[i]=el.value.trim()||PLAYERS[i][0];hsave();
+  renderCatalog();renderStage();renderStandings();renderA()});
+$("resetNames").addEventListener("click",function(){H.names=PLAYERS.map(function(p){return p[0]});hsave();renderRoster();renderCatalog();renderStage();renderStandings();renderA()});
+$("fGroup").innerHTML=GROUPS.map(function(g,i){return'<option value="'+i+'">'+g[0]+'</option>'}).join("");
+function formHint(){var g=+$("fGroup").value,cs=allCards().filter(function(c){return c.g===g}),left=GROUPS[g][2]-cs.reduce(function(a,c){return a+c.e},0);
+  $("fMsg").style.color="var(--muted)";
+  if(cs.length>=4)$("fMsg").textContent=GROUPS[g][0]+" is complete.";
+  else if(cs.length===3){$("fMsg").textContent="The last "+GROUPS[g][0]+" Estimate must be "+fmt(left)+".";$("fEst").value=left}
+  else $("fMsg").textContent=(4-cs.length)+" "+GROUPS[g][0]+" works left; their Estimates add up to "+fmt(left)+"."}
+$("fGroup").addEventListener("change",formHint);
+$("fAdd").addEventListener("click",function(){
+  var g=+$("fGroup").value,t=$("fTitle").value.trim(),a=$("fArtist").value.trim(),r=+$("fRes").value,e=+$("fEst").value;
+  if(!t||!a||!r||!e){$("fMsg").textContent="Fill in title, artist, Reserve and Estimate.";$("fMsg").style.color="var(--bad)";return}
+  if(allCards().filter(function(c){return c.g===g}).length>=4){$("fMsg").textContent=GROUPS[g][0]+" already has 4 artworks.";$("fMsg").style.color="var(--bad)";return}
+  var c={id:"c"+Date.now(),g:g,title:t,artist:a,r:r,e:e};H.custom.push(c);hsave();
+  ["fTitle","fArtist","fRes","fEst"].forEach(function(id){$(id).value=""});
+  filt=g;renderHelper();formHint();$("fMsg").textContent="Added "+t+". "+$("fMsg").textContent;$("fMsg").style.color="var(--good)"});
+$("resetOwners").addEventListener("click",function(){if(confirm("Return every artwork to the deck and clear cash?")){H.owner={};H.cash=["","","","","",""];if(AU)clearTimeout(AU.timer);AU=null;hsave();renderHelper()}});
+renderHelper();formHint();
+
+/* photos (stored only in this browser) */
+function idb(){return new Promise(function(res,rej){try{var r=indexedDB.open("ggg-photos",1);r.onupgradeneeded=function(){r.result.createObjectStore("img")};r.onsuccess=function(){res(r.result)};r.onerror=function(){rej(r.error)}}catch(e){rej(e)}})}
+function loadPhotos(){idb().then(function(db){var st=db.transaction("img").objectStore("img");var q=st.openCursor();q.onsuccess=function(){var cur=q.result;if(cur){PH[cur.key]=URL.createObjectURL(cur.value);cur.continue()}else{renderCatalog();renderStage()}}}).catch(function(){})}
+function savePhoto(id,blob){idb().then(function(db){var tx=db.transaction("img","readwrite");tx.objectStore("img").put(blob,id);tx.oncomplete=function(){if(PH[id])URL.revokeObjectURL(PH[id]);PH[id]=URL.createObjectURL(blob);renderCatalog();renderStage()}}).catch(function(){alert("This browser could not save the photo.")})}
+function delPhoto(id){idb().then(function(db){var tx=db.transaction("img","readwrite");tx.objectStore("img").delete(id);tx.oncomplete=function(){if(PH[id])URL.revokeObjectURL(PH[id]);delete PH[id];renderCatalog();renderStage()}}).catch(function(){})}
+var phFor=null;
+function pickPhoto(id){phFor=id;$("phInput").value="";$("phInput").click()}
+$("phInput").addEventListener("change",function(){var f=this.files&&this.files[0];if(!f||!phFor)return;Q.active=false;$("cropTitle").textContent="Photo for: "+card(phFor).title;var img=new Image();img.onload=function(){startCrop(img)};img.onerror=function(){alert("This photo format can’t be opened here. Save it as a JPEG and try again.")};img.src=URL.createObjectURL(f)});
+/* bulk import: IMG_5505–5510 and IMG_5512–5541 match the catalogue pages in order */
+var FILEMAP={};for(var fi=0;fi<6;fi++)FILEMAP[5505+fi]="b"+fi;for(fi=0;fi<30;fi++)FILEMAP[5512+fi]="b"+(6+fi);
+var Q={active:false,list:[],total:0,done:0,skipped:0};
+$("bulkBtn").addEventListener("click",function(){$("phBulk").value="";$("phBulk").click()});
+$("phBulk").addEventListener("change",function(){var files=Array.prototype.slice.call(this.files||[]);if(!files.length)return;
+  var items=[],rest=[],order=allCards().map(function(c){return c.id});
+  files.forEach(function(f){var nums=f.name.match(/\d{4}/g)||[],id=null;nums.forEach(function(n){if(!id&&FILEMAP[n])id=FILEMAP[n]});if(id)items.push({id:id,file:f});else rest.push(f)});
+  if(!items.length){rest.sort(function(a,b){return a.name.localeCompare(b.name,undefined,{numeric:true})});rest.slice(0,36).forEach(function(f,i){items.push({id:order[i],file:f})})}
+  items.sort(function(a,b){return order.indexOf(a.id)-order.indexOf(b.id)});
+  var seen={};items=items.filter(function(it){if(seen[it.id])return false;seen[it.id]=1;return true});
+  Q={active:true,list:items,total:items.length,done:0,skipped:0};$("cropStop").hidden=false;$("cropCancel").textContent="Skip this one";nextInQueue()});
+function nextInQueue(){if(!Q.list.length){finishQueue();return}var it=Q.list.shift();phFor=it.id;
+  $("cropTitle").textContent="Photo for: "+card(it.id).title+" ("+(Q.total-Q.list.length)+" of "+Q.total+")";
+  var img=new Image();img.onload=function(){startCrop(img)};img.onerror=function(){Q.skipped++;nextInQueue()};img.src=URL.createObjectURL(it.file)}
+function finishQueue(){var was=Q.active;Q.active=false;$("crop").hidden=true;$("cropStop").hidden=true;$("cropCancel").textContent="Cancel";
+  if(was)$("bulkMsg").textContent=Q.done+" photos saved"+(Q.skipped?", "+Q.skipped+" skipped":"")+". "+Object.keys(PH).length+" of 36 artworks now have a photo."}
+function afterCrop(saved){if(saved)Q.done++;else if(Q.active)Q.skipped++;if(Q.active)nextInQueue();else $("crop").hidden=true}
+$("cropStop").addEventListener("click",function(){Q.list=[];finishQueue()});
+
+/* crop */
+var CR={src:null,rot:0,sel:null,drag:null};
+function cropSource(){var im=CR.src,r=CR.rot%360,c=document.createElement("canvas");var w=im.naturalWidth||im.width,h=im.naturalHeight||im.height;
+  if(r===90||r===270){c.width=h;c.height=w}else{c.width=w;c.height=h}
+  var x=c.getContext("2d");x.translate(c.width/2,c.height/2);x.rotate(r*Math.PI/180);x.drawImage(im,-w/2,-h/2);return c}
+function drawCrop(){var src=cropSource();CR.full=src;var cv=$("cropCanvas"),k=Math.min(1,1400/Math.max(src.width,src.height));cv.width=Math.round(src.width*k);cv.height=Math.round(src.height*k);cv.getContext("2d").drawImage(src,0,0,cv.width,cv.height);CR.sel=null;$("cropRect").hidden=true;$("cropMsg").textContent="No selection: the whole photo will be saved."}
+function startCrop(img){CR.src=img;CR.rot=0;$("crop").hidden=false;drawCrop()}
+function relPos(e){var r=$("cropCanvas").getBoundingClientRect();return{x:Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)),y:Math.max(0,Math.min(1,(e.clientY-r.top)/r.height))}}
+function showRect(){var s=CR.sel,cv=$("cropCanvas"),el=$("cropRect");if(!s){el.hidden=true;return}el.hidden=false;
+  el.style.left=(s.x*cv.clientWidth)+"px";el.style.top=(s.y*cv.clientHeight)+"px";el.style.width=(s.w*cv.clientWidth)+"px";el.style.height=(s.h*cv.clientHeight)+"px"}
+$("cropStage").addEventListener("pointerdown",function(e){CR.drag=relPos(e);CR.sel=null;this.setPointerCapture(e.pointerId)});
+$("cropStage").addEventListener("pointermove",function(e){if(!CR.drag)return;var p=relPos(e),a=CR.drag;CR.sel={x:Math.min(a.x,p.x),y:Math.min(a.y,p.y),w:Math.abs(p.x-a.x),h:Math.abs(p.y-a.y)};showRect()});
+$("cropStage").addEventListener("pointerup",function(){CR.drag=null;if(CR.sel&&(CR.sel.w<.03||CR.sel.h<.03)){CR.sel=null;showRect()}$("cropMsg").textContent=CR.sel?"Only the dashed area will be saved.":"No selection: the whole photo will be saved."});
+$("cropRot").addEventListener("click",function(){CR.rot=(CR.rot+90)%360;drawCrop()});
+$("cropCancel").addEventListener("click",function(){afterCrop(false)});
+$("cropSave").addEventListener("click",function(){var src=CR.full,s=CR.sel||{x:0,y:0,w:1,h:1};
+  var sx=s.x*src.width,sy=s.y*src.height,sw=s.w*src.width,sh=s.h*src.height,k=Math.min(1,1600/Math.max(sw,sh));
+  var out=document.createElement("canvas");out.width=Math.round(sw*k);out.height=Math.round(sh*k);out.getContext("2d").drawImage(src,sx,sy,sw,sh,0,0,out.width,out.height);
+  out.toBlob(function(b){if(b)savePhoto(phFor,b);afterCrop(!!b)},"image/jpeg",0.86)});
+
+/* auction mode */
+function amIsOpen(){return !$("am").hidden}
+function openAM(){if(!sel){var d=allCards().filter(function(c){return ownerOf(c.id)==="deck"})[0]||allCards()[0];sel=d.id}
+  $("am").hidden=false;fillPick();renderAM();var el=$("am");try{if(el.requestFullscreen)el.requestFullscreen().catch(function(){})}catch(e){}$("amPick").focus()}
+function closeAM(){$("am").hidden=true;try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}renderCatalog();renderStage0();}
+function fillPick(){$("amPick").innerHTML=GROUPS.map(function(g,gi){return'<optgroup label="'+g[0]+'">'+allCards().filter(function(c){return c.g===gi}).map(function(c){var o=ownerOf(c.id);return'<option value="'+c.id+'"'+(c.id===sel?" selected":"")+'>'+esc(c.title)+(o==="deck"?"":" ("+esc(ownerLabel(o))+")")+'</option>'}).join("")+'</optgroup>'}).join("")}
+function renderAM(){var c=card(sel);if(!c)return;var g=GROUPS[c.g];
+  $("amPhoto").textContent=PH[c.id]?"Replace photo":"Add a photo";
+  $("amArt").style.background=PH[c.id]?"#fff":g[1];
+  $("amArt").innerHTML=PH[c.id]?'<img src="'+PH[c.id]+'" alt="'+esc(c.title)+'">':'<div class="am-ph"><span class="grp" style="background:#fff;border:2px solid #1d1a17;border-radius:999px;padding:2px 12px;font-weight:700">'+g[0]+'</span><b>'+esc(c.title)+'</b><button class="btn alt" data-am="photo">Add a photo of this artwork</button></div>';
+  var h='<span class="grp" style="background:'+g[1]+'">'+g[0]+'</span><h2>'+esc(c.title)+'</h2><p class="artist">'+esc(c.artist)+'</p><p class="story">'+hl(STORY[c.id]||"")+'</p><div class="am-bid">';
+  if(!AU||AU.id!==c.id){h+='<div class="ctl"><button class="btn red" data-am="start">Start the auction</button></div><p style="margin:0;color:#5c564f">Bidding opens at the Reserve printed on the card.</p>'}
+  else{var t=AU.bids[AU.bids.length-1];
+    h+='<div class="callout" style="min-height:0">'+AU.call+'</div><div class="now">'+(t?fmt(t.amt):"No bids yet")+'</div><div style="font-size:1.15rem;min-height:1.6em">'+(t?avatar(t.p)+esc(pname(t.p)):"")+'</div>';
+    if(AU.phase!=="sold"){
+      h+='<div class="bidders" style="margin:8px 0">'+PLAYERS.map(function(p,i){return'<button class="bidder" data-p="'+i+'" aria-pressed="'+(AU.who===i)+'"><b>'+avatar(i)+esc(pname(i))+'</b></button>'}).join("")+'</div>';
+      h+='<div class="ctl">'+(t?[10,20,50,100].map(function(v){return'<button class="btn alt" data-inc="'+v+'">+$'+v+'M</button>'}).join(""):'<button class="btn alt" data-inc="0">Open at the Reserve</button>')+'<button class="btn" data-am="going"'+(t&&AU.phase==="open"?"":" disabled")+'>Going, going…</button>'+(t?'':'<button class="btn alt" data-am="cancel">No bids</button>')+'</div>';
+    }else{h+='<div class="ctl"><button class="btn alt" data-am="nopay">Winner can’t pay</button><button class="btn" data-am="done">Done</button></div>'}
+    h+='<div class="log">'+AU.log.slice(0,4).map(function(l){return"<p>"+l+"</p>"}).join("")+'</div>'}
+  $("amInfo").innerHTML=h+'</div>';
+}
+var AMS=1;try{AMS=+localStorage.getItem("ggg-am-scale")||1}catch(e){}
+function setAMS(v){AMS=Math.max(.7,Math.min(1.8,Math.round(v*10)/10));$("am").style.setProperty("--s",AMS);try{localStorage.setItem("ggg-am-scale",AMS)}catch(e){}}
+setAMS(AMS);
+$("amBigger").addEventListener("click",function(){setAMS(AMS+.1)});
+$("amSmaller").addEventListener("click",function(){setAMS(AMS-.1)});
+$("amOpen").addEventListener("click",openAM);
+$("amClose").addEventListener("click",closeAM);
+$("amPhoto").addEventListener("click",function(){pickPhoto(sel)});
+$("amPick").addEventListener("change",function(){if(AU&&AU.id!==this.value){clearTimeout(AU.timer);AU=null}sel=this.value;renderAM()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&amIsOpen()&&$("crop").hidden)closeAM()});
+document.addEventListener("fullscreenchange",function(){if(!document.fullscreenElement&&amIsOpen()){}});
+$("am").addEventListener("click",function(e){var b=e.target.closest("button");if(!b||!b.closest("#amArt,#amInfo"))return;var a=b.dataset.am;
+  if(a==="photo"){pickPhoto(sel);return}
+  if(a==="start"){AU={id:sel,bids:[],who:0,phase:"open",call:"Bidding open",log:["Auction opened."]};renderAM();return}
+  if(!AU)return;
+  if(b.dataset.p!==undefined){AU.who=+b.dataset.p;renderAM();return}
+  if(b.dataset.inc!==undefined){hbid(+b.dataset.inc);return}
+  if(a==="going"){hgoing();return}
+  if(a==="nopay"){hnopay();fillPick();return}
+  if(a==="done"||a==="cancel"){clearTimeout(AU.timer);AU=null;fillPick();renderAM()}});
+loadPhotos();
+/* views */
+function showView(v,noScroll){if(!document.querySelector('.view[data-view="'+v+'"]'))v="rules";
+  document.querySelectorAll(".view").forEach(function(el){el.hidden=el.dataset.view!==v});
+  document.querySelectorAll(".views button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.v===v)});
+  try{localStorage.setItem("ggg-view",v)}catch(e){}if(!noScroll)window.scrollTo(0,0)}
+document.querySelector(".views").addEventListener("click",function(e){var b=e.target.closest("button[data-v]");if(b)showView(b.dataset.v)});
+document.addEventListener("click",function(e){var a=e.target.closest("[data-go]");if(a){e.preventDefault();showView(a.dataset.go)}});
+document.querySelector('.view[data-view="game"] .headrow .seg').addEventListener("click",function(e){var b=e.target.closest("button[data-sub]");if(!b)return;
+  this.querySelectorAll("button").forEach(function(o){o.setAttribute("aria-pressed",o===b)});
+  document.querySelectorAll(".sub").forEach(function(el){el.hidden=el.dataset.sub!==b.dataset.sub})});
+var v0="rules";try{v0=localStorage.getItem("ggg-view")||"rules"}catch(e){}showView(v0,true);
+if(allCards().length>=36)$("addWrap").hidden=true;
+})();
+</script>
+</body>
+</html>
